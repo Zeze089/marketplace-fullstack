@@ -11,16 +11,27 @@ import {
   Query,
   HttpStatus,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 
+// Importar guards e decorators
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RoleGuard } from '../auth/guards/role.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Public } from '../auth/decorators/public.decorator';
+import { UserRole } from '../users/entities/user.entity';
+
 @Controller('products')
+@UseGuards(JwtAuthGuard, RoleGuard) // Proteção padrão para todas as rotas
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  // CRIAR PRODUTO - SÓ ADMIN
   @Post()
+  @Roles(UserRole.ADMIN) // 👈 SÓ ADMIN PODE CRIAR
   async create(@Body() createProductDto: CreateProductDto) {
     const product = await this.productsService.create(createProductDto);
     return {
@@ -30,7 +41,9 @@ export class ProductsController {
     };
   }
 
+  // LISTAR PRODUTOS - PÚBLICO
   @Get()
+  @Public() // 👈 ROTA PÚBLICA
   async findAll(
     @Query('page') page?: string,
     @Query('limit') limit?: string,
@@ -68,8 +81,9 @@ export class ProductsController {
     }
   }
 
-  // MOVER ROTAS ESPECÍFICAS ANTES DAS ROTAS COM PARÂMETROS
+  // VERIFICAR ESTOQUE - PÚBLICO
   @Get('check-stock/:id/:quantity')
+  @Public() // 👈 ROTA PÚBLICA
   async checkStock(
     @Param('id', ParseIntPipe) id: number,
     @Param('quantity', ParseIntPipe) quantity: number,
@@ -82,7 +96,9 @@ export class ProductsController {
     };
   }
 
+  // VER UM PRODUTO - PÚBLICO
   @Get(':id')
+  @Public() // 👈 ROTA PÚBLICA
   async findOne(@Param('id', ParseIntPipe) id: number) {
     const product = await this.productsService.findOne(id);
     return {
@@ -92,7 +108,9 @@ export class ProductsController {
     };
   }
 
+  // ATUALIZAR PRODUTO - SÓ ADMIN
   @Patch(':id')
+  @Roles(UserRole.ADMIN) // 👈 SÓ ADMIN PODE ATUALIZAR
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateProductDto: UpdateProductDto,
@@ -105,7 +123,9 @@ export class ProductsController {
     };
   }
 
+  // DELETAR PRODUTO - SÓ ADMIN
   @Delete(':id')
+  @Roles(UserRole.ADMIN) // 👈 SÓ ADMIN PODE DELETAR
   async remove(@Param('id', ParseIntPipe) id: number) {
     await this.productsService.remove(id);
     return {

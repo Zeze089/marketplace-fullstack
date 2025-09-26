@@ -16,12 +16,12 @@ export declare class CartService {
             quantity: number;
             subtotal: number;
             product: {
-                id: any;
-                name: any;
-                price: any;
-                stock: any;
-                imageUrl: any;
-                category: any;
+                id: number | undefined;
+                name: string | undefined;
+                price: number | undefined;
+                stock: number | undefined;
+                imageUrl: string | undefined;
+                category: string | undefined;
             };
         }[];
         summary: {
@@ -40,12 +40,12 @@ export declare class CartService {
             quantity: number;
             subtotal: number;
             product: {
-                id: any;
-                name: any;
-                price: any;
-                stock: any;
-                imageUrl: any;
-                category: any;
+                id: number | undefined;
+                name: string | undefined;
+                price: number | undefined;
+                stock: number | undefined;
+                imageUrl: string | undefined;
+                category: string | undefined;
             };
         }[];
         summary: {
@@ -64,12 +64,12 @@ export declare class CartService {
             quantity: number;
             subtotal: number;
             product: {
-                id: any;
-                name: any;
-                price: any;
-                stock: any;
-                imageUrl: any;
-                category: any;
+                id: number | undefined;
+                name: string | undefined;
+                price: number | undefined;
+                stock: number | undefined;
+                imageUrl: string | undefined;
+                category: string | undefined;
             };
         }[];
         summary: {
@@ -90,12 +90,12 @@ export declare class CartService {
                 quantity: number;
                 subtotal: number;
                 product: {
-                    id: any;
-                    name: any;
-                    price: any;
-                    stock: any;
-                    imageUrl: any;
-                    category: any;
+                    id: number | undefined;
+                    name: string | undefined;
+                    price: number | undefined;
+                    stock: number | undefined;
+                    imageUrl: string | undefined;
+                    category: string | undefined;
                 };
             }[];
             summary: {

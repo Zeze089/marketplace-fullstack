@@ -16,7 +16,7 @@ const auth_service_1 = require("./auth.service");
 const auth_controller_1 = require("./auth.controller");
 const jwt_strategy_1 = require("./strategies/jwt.strategy");
 const jwt_auth_guard_1 = require("./guards/jwt-auth.guard");
-const roles_guard_1 = require("./guards/roles.guard");
+const role_guard_1 = require("./guards/role.guard");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -41,12 +41,12 @@ exports.AuthModule = AuthModule = __decorate([
             auth_service_1.AuthService,
             jwt_strategy_1.JwtStrategy,
             jwt_auth_guard_1.JwtAuthGuard,
-            roles_guard_1.RolesGuard,
+            role_guard_1.RoleGuard,
         ],
         exports: [
             auth_service_1.AuthService,
             jwt_auth_guard_1.JwtAuthGuard,
-            roles_guard_1.RolesGuard,
+            role_guard_1.RoleGuard,
         ],
     })
 ], AuthModule);

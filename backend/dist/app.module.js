@@ -16,6 +16,9 @@ const product_entity_1 = require("./modules/products/entities/product.entity");
 const cart_entity_1 = require("./modules/cart/entities/cart.entity");
 const cart_item_entity_1 = require("./modules/cart/entities/cart-item.entity");
 const auth_module_1 = require("./modules/auth/auth.module");
+const cart_module_1 = require("./modules/cart/cart.module");
+const products_module_1 = require("./modules/products/products.module");
+const seeds_module_1 = require("./database/seeds/seeds.module");
 const app_controller_1 = require("./app.controller");
 let AppModule = class AppModule {
 };
@@ -33,6 +36,9 @@ exports.AppModule = AppModule = __decorate([
             }),
             typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, product_entity_1.Product, cart_entity_1.Cart, cart_item_entity_1.CartItem]),
             auth_module_1.AuthModule,
+            cart_module_1.CartModule,
+            products_module_1.ProductsModule,
+            seeds_module_1.SeedsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [],

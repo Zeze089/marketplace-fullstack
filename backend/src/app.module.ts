@@ -13,9 +13,12 @@ import { CartItem } from './modules/cart/entities/cart-item.entity';
 
 // Importar módulos
 import { AuthModule } from './modules/auth/auth.module';
+import { CartModule } from './modules/cart/cart.module';
+import { ProductsModule } from './modules/products/products.module';
+import { SeedsModule } from './database/seeds/seeds.module';
 
 // Importar controller principal
-import { AppController } from './app.controller'; // 👈 ADICIONADO
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -36,8 +39,11 @@ import { AppController } from './app.controller'; // 👈 ADICIONADO
 
     // Feature modules
     AuthModule,
+    CartModule,
+    ProductsModule,
+    SeedsModule, // 👈 ADICIONADO
   ],
-  controllers: [AppController], // 👈 ADICIONADO
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}
