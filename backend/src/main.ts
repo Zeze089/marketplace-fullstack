@@ -1,7 +1,7 @@
 // backend/src/main.ts
 
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+//import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -17,13 +17,13 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
 
   // Global validation
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    }),
-  );
+  //app.useGlobalPipes(
+  //  new ValidationPipe({
+  //    whitelist: true,
+  //    forbidNonWhitelisted: true,
+  //    transform: true,
+  //  }),
+  //);
 
   // Tentar portas diferentes
   const ports = [3001, 3002, 3003, 3004];

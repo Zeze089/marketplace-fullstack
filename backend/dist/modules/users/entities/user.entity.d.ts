@@ -13,9 +13,9 @@ export declare class User {
     role: UserRole;
     isActive: boolean;
     emailVerified: boolean;
-    emailVerificationToken: string;
-    passwordResetToken: string;
-    passwordResetExpires: Date;
+    emailVerificationToken: string | null;
+    passwordResetToken: string | null;
+    passwordResetExpires: Date | null;
     cart: Cart;
     createdAt: Date;
     updatedAt: Date;

@@ -11,8 +11,8 @@ import {
   BeforeUpdate,
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
-import * as bcrypt from 'bcrypt';
-import { Cart } from '../../cart/entities/cart.entity'; 
+import { hash, compare } from 'bcrypt';
+import { Cart } from '../../cart/entities/cart.entity';
 
 export enum UserRole {
   USER = 'USER',
@@ -53,18 +53,17 @@ export class User {
   @Column({ type: 'boolean', default: false })
   emailVerified: boolean;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true, default: null })
   @Exclude()
-  emailVerificationToken: string;
+  emailVerificationToken: string | null;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true, default: null })
   @Exclude()
-  passwordResetToken: string;
+  passwordResetToken: string | null;
 
-  @Column({ type: 'timestamp', nullable: true })
-  passwordResetExpires: Date;
+  @Column({ type: 'timestamp', nullable: true, default: null })
+  passwordResetExpires: Date | null;
 
-  
   @OneToOne(() => Cart, (cart) => cart.user)
   cart: Cart;
 
@@ -79,12 +78,12 @@ export class User {
   async hashPassword() {
     if (this.password) {
       const saltRounds = 12;
-      this.password = await bcrypt.hash(this.password, saltRounds);
+      this.password = await hash(this.password, saltRounds);
     }
   }
 
   async comparePassword(plainPassword: string): Promise<boolean> {
-    return bcrypt.compare(plainPassword, this.password);
+    return compare(plainPassword, this.password);
   }
 
   // Método para limpar dados sensíveis
