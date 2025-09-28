@@ -1,6 +1,6 @@
 # 🛍️ Marketplace Fullstack
 
-API REST completa para loja online desenvolvida para o processo seletivo da **UX Software**.
+Aplicação completa de marketplace desenvolvida para o processo seletivo da **UX Software**.
 
 ## 🚀 Como Executar
 
@@ -8,20 +8,26 @@ API REST completa para loja online desenvolvida para o processo seletivo da **UX
 - Node.js 18+
 - Docker e Docker Compose
 
-### Execução Rápida
+### Execução Completa
 ```bash
 git clone https://github.com/seu-usuario/marketplace-fullstack.git
 cd marketplace-fullstack
 
-# Criar .env na pasta backend/ (ver variáveis abaixo)
-# Subir aplicação
-docker-compose up -d
+# 1. Backend
+cd backend
+cp .env.example .env  # Configure as variáveis
+docker-compose up -d  # Subir PostgreSQL
+npm install
+npm run start:dev     # Backend na porta 3001
+npm run seed          # Popular com dados de teste
 
-# Popular banco com dados de teste
-cd backend && npm run seed
+# 2. Frontend (nova aba do terminal)
+cd ../frontend
+npm install
+npm run dev          # Frontend na porta 3000
 ```
 
-### Variáveis de Ambiente (.env)
+### Variáveis de Ambiente (.env no backend/)
 ```env
 DATABASE_HOST=postgres
 DATABASE_PORT=5432
@@ -36,81 +42,166 @@ NODE_ENV=development
 PORT=3001
 ```
 
-## 📡 API Endpoints
+## 📡 Funcionalidades
 
-**Base URL:** `http://localhost:3001/api/v1`
+### Backend (NestJS + PostgreSQL)
+- **Autenticação:** JWT com roles (admin/user)
+- **Produtos:** CRUD completo com proteção
+- **Carrinho:** Adicionar, remover, atualizar itens
+- **Usuários:** Cadastro com verificação de email
+- **Segurança:** Guards, validações, hash de senhas
 
-### Autenticação
-- `POST /auth/register` - Cadastrar usuário
-- `POST /auth/login` - Login
-- `GET /auth/profile` - Ver perfil (auth)
-
-### Produtos  
-- `GET /products` - Listar produtos (público)
-- `POST /products` - Criar produto (admin only)
-- `PATCH /products/:id` - Atualizar (admin only)
-- `DELETE /products/:id` - Deletar (admin only)
-
-### Carrinho
-- `GET /cart` - Ver carrinho (auth)
-- `POST /cart/add` - Adicionar produto (auth)
-- `POST /cart/update` - Atualizar quantidade (auth)
-- `DELETE /cart/remove/:id` - Remover produto (auth)
+### Frontend (NextJS + TypeScript)
+- **Interface:** Responsiva com TailwindCSS
+- **Páginas:** Login, Cadastro, Produtos, Carrinho
+- **Recursos:** Máscaras CPF/telefone, validações
+- **UX:** Animações, notificações, contador carrinho
+- **Admin:** CRUD de produtos com modal
 
 ## 🧪 Usuários de Teste
 
-Após executar `npm run seed`:
-
-**Admin:**
 ```json
-{
+Admin: {
   "email": "admin@marketplace.com",
   "password": "admin123"
 }
-```
 
-**Usuário:**
-```json
-{
+Usuário: {
   "email": "user@marketplace.com", 
   "password": "user123"
 }
 ```
 
-## 🔄 Fluxo de Teste
+## 📱 Páginas e Funcionalidades
 
-1. **Login Admin** → Criar produtos
-2. **Login User** → Adicionar ao carrinho
-3. **Testar CRUD** completo
+### 🔐 Autenticação
+- **Login:** Validação, redirecionamento automático
+- **Cadastro:** Máscaras CPF (000.000.000-00), telefone ((00) 00000-0000)
+- **Proteção:** Rotas protegidas, logout automático
 
-## 🛡️ Funcionalidades
+### 🛒 Produtos (Home)
+- **Visualização:** Cards responsivos, imagens inteligentes
+- **Interação:** Modal detalhado ao clicar
+- **Carrinho:** Adicionar com animação profissional
+- **Admin:** Criar, editar, excluir produtos
 
-- ✅ Autenticação JWT
-- ✅ Proteção por roles (admin/user)
-- ✅ CRUD de produtos
-- ✅ Sistema de carrinho
-- ✅ Validações de negócio
-- ✅ Seeds automáticos
-- ✅ Docker configurado
+### 🛍️ Carrinho
+- **Gerenciar:** Atualizar quantidades, remover itens
+- **Visual:** Contador no header, cálculo automático
+- **UX:** Animações de feedback, estados vazios
+
+## 🎨 Recursos Visuais
+
+### Sistema Inteligente de Imagens
+Detecta automaticamente o tipo de produto:
+- "iPhone" → Imagem de smartphone
+- "Camera PTZ" → Imagem de câmera profissional
+- "MacBook" → Imagem de laptop
+- "PlayStation" → Imagem de console
+
+### Animações Profissionais
+- Notificação deslizante ao adicionar produtos
+- Contador do carrinho estilo WhatsApp
+- Loading states e transições suaves
+- Modal responsivo para detalhes
+
+## 🔄 Fluxos Principais
+
+### Cliente
+1. Cadastro → Verificação email → Login
+2. Navegar produtos → Ver detalhes → Adicionar carrinho
+3. Gerenciar carrinho → Finalizar compra
+
+### Admin
+1. Login → Acessar área admin
+2. Criar/editar/excluir produtos
+3. Gerenciar estoque e categorias
+
+## 📊 Tecnologias
+
+### Backend
+- NestJS, TypeScript, PostgreSQL
+- JWT, bcrypt, TypeORM
+- Docker, Swagger docs
+
+### Frontend  
+- NextJS 14, TypeScript, TailwindCSS
+- React Hook Form, Zod, Axios
+- Context API, Lucide Icons
 
 ## 🐳 Docker
 
 ```bash
-# Subir aplicação
+# Backend completo
 docker-compose up -d
 
-# Ver logs
+# Logs
 docker-compose logs -f backend
 
 # Parar
 docker-compose down
 ```
 
-## 📊 Status
+## 📋 API Endpoints
 
-**Backend:** 100% Completo e testado
-**Frontend:** Em desenvolvimento (NextJS + TailwindCSS)
+**Base:** `http://localhost:3001/api/v1`
+
+### Autenticação
+- `POST /auth/register` - Cadastro
+- `POST /auth/login` - Login  
+- `GET /auth/profile` - Perfil (auth)
+
+### Produtos
+- `GET /products` - Listar (público)
+- `POST /products` - Criar (admin)
+- `PATCH /products/:id` - Editar (admin)
+- `DELETE /products/:id` - Deletar (admin)
+
+### Carrinho
+- `GET /cart` - Ver carrinho (auth)
+- `POST /cart/add` - Adicionar (auth)
+- `POST /cart/update` - Atualizar (auth)
+- `DELETE /cart/remove/:id` - Remover (auth)
+
+## ✅ Checklist PS
+
+Todos os requisitos implementados:
+
+### Obrigatórios
+- ✅ NextJS com TypeScript
+- ✅ TailwindCSS para estilização
+- ✅ Três páginas: Login, Cadastro, Produtos
+- ✅ Carrinho de compras funcional
+- ✅ Integração completa com API
+- ✅ Tratamento de erros da API
+- ✅ Máscaras CPF (000.000.000-00) e telefone ((00) 00000-0000)
+
+### Extras Implementados
+- ✅ Sistema de imagens inteligentes
+- ✅ Animações profissionais
+- ✅ Modal de detalhes dos produtos
+- ✅ Contador de carrinho em tempo real
+- ✅ Interface responsiva completa
+- ✅ Estados de loading e feedback visual
+- ✅ Proteção de rotas e roles
+
+## 🚀 Deploy
+
+**URLs:**
+- Frontend: http://localhost:3000
+- Backend: http://localhost:3001
+- API Docs: http://localhost:3001/api
+
+## 📞 Suporte
+
+Para dúvidas técnicas, verificar:
+1. Logs do Docker: `docker-compose logs`
+2. Console do navegador (F12)
+3. Seeds executados: `npm run seed`
+4. Variáveis de ambiente configuradas
 
 ---
 
 **Desenvolvido para UX Software - Setembro 2025**
+
+Projeto fullstack completo demonstrando competência em desenvolvimento moderno com foco em UX/UI e boas práticas de código.
