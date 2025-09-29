@@ -1,24 +1,19 @@
-FROM node:18-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
-# Atualizar npm primeiro
-RUN npm install -g npm@latest
-
-# Copiar package files do backend
+# Copiar arquivos de dependências
 COPY backend/package*.json ./
 
-# Instalar dependências forçando versão
-RUN npm install --legacy-peer-deps --force
+# Instalar dependências (npm 10 vem com Node 20)
+RUN npm ci --omit=dev
 
-# Copiar código do backend
+# Copiar todo o código
 COPY backend/ ./
 
-# Build da aplicação
+# Build
+RUN npm install --save-dev @nestjs/cli typescript
 RUN npm run build
-
-# Limpar devDependencies
-RUN npm prune --production
 
 EXPOSE 3001
 
