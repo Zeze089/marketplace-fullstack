@@ -6,7 +6,7 @@ import { Controller, Get } from '@nestjs/common';
 export class AppController {
   @Get()
   getHello(): string {
-    return 'Marketplace API is running! 🚀';
+    return 'A API do Marketplace está em execução! 🚀';
   }
 
   @Get('health')

@@ -13,7 +13,7 @@ exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 let AppController = class AppController {
     getHello() {
-        return 'Marketplace API is running! 🚀';
+        return 'A API do Marketplace está em execução! 🚀';
     }
     getHealth() {
         return {

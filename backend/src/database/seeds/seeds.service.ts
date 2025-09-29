@@ -54,6 +54,7 @@ export class SeedsService {
         isActive: true,
         emailVerified: true,
       },
+      
       {
         name: 'Usuário de Teste',
         email: 'user@marketplace.com',
@@ -73,7 +74,7 @@ export class SeedsService {
         role: UserRole.USER,
         isActive: true,
         emailVerified: true,
-      },
+      }, 
     ];
 
     await this.userRepository.save(users);
