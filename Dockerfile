@@ -2,11 +2,14 @@ FROM node:18-alpine
 
 WORKDIR /app
 
+# Atualizar npm primeiro
+RUN npm install -g npm@latest
+
 # Copiar package files do backend
 COPY backend/package*.json ./
 
-# Instalar dependências sem verificação de peer dependencies
-RUN npm install --legacy-peer-deps
+# Instalar dependências forçando versão
+RUN npm install --legacy-peer-deps --force
 
 # Copiar código do backend
 COPY backend/ ./
