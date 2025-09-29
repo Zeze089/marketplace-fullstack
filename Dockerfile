@@ -5,14 +5,17 @@ WORKDIR /app
 # Copiar package files do backend
 COPY backend/package*.json ./
 
-RUN npm ci
+# Instalar dependências sem verificação de peer dependencies
+RUN npm install --legacy-peer-deps
 
 # Copiar código do backend
 COPY backend/ ./
 
+# Build da aplicação
 RUN npm run build
 
-RUN npm ci --only=production && npm cache clean --force
+# Limpar devDependencies
+RUN npm prune --production
 
 EXPOSE 3001
 
