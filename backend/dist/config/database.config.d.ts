@@ -1,11 +1,2 @@
-export declare const databaseConfig: {
-    type: "postgres";
-    host: string;
-    port: number;
-    username: string;
-    password: string;
-    database: string;
-    autoLoadEntities: boolean;
-    synchronize: boolean;
-    logging: boolean;
-};
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+export declare const databaseConfig: TypeOrmModuleOptions;

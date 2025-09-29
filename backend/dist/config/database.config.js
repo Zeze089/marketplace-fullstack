@@ -3,13 +3,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.databaseConfig = void 0;
 exports.databaseConfig = {
     type: 'postgres',
-    host: process.env.DB_HOST || 'localhost',
-    port: parseInt(process.env.DB_PORT || '5432'),
-    username: process.env.DB_USERNAME || 'postgres',
-    password: process.env.DB_PASSWORD || 'postgres123',
-    database: process.env.DB_DATABASE || 'marketplace',
-    autoLoadEntities: true,
-    synchronize: process.env.NODE_ENV !== 'production',
-    logging: process.env.NODE_ENV === 'development',
+    ...(process.env.DATABASE_URL
+        ? { url: process.env.DATABASE_URL }
+        : {
+            host: process.env.DATABASE_HOST || 'localhost',
+            port: parseInt(process.env.DATABASE_PORT || '5432', 10),
+            username: process.env.DATABASE_USERNAME || 'postgres',
+            password: process.env.DATABASE_PASSWORD || 'postgres',
+            database: process.env.DATABASE_NAME || 'marketplace_db',
+        }),
+    synchronize: false,
+    logging: false,
+    entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+    migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
+    ssl: process.env.NODE_ENV === 'production'
+        ? { rejectUnauthorized: false }
+        : false,
 };
 //# sourceMappingURL=database.config.js.map
