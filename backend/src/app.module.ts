@@ -15,7 +15,7 @@ import { CartItem } from './modules/cart/entities/cart-item.entity';
 import { AuthModule } from './modules/auth/auth.module';
 import { CartModule } from './modules/cart/cart.module';
 import { ProductsModule } from './modules/products/products.module';
-import { SeedsModule } from './database/seeds/seeds.module';
+import { SeedsModule } from './database/seeds/seeds.module'; // 👈 ADICIONADO
 
 // Importar controller principal
 import { AppController } from './app.controller';

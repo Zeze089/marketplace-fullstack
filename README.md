@@ -9,35 +9,69 @@ Aplicação completa de marketplace desenvolvida para o processo seletivo da **U
 - Docker e Docker Compose
 
 ### Execução Completa
+
 ```bash
+# Clone o repositório
 git clone https://github.com/seu-usuario/marketplace-fullstack.git
 cd marketplace-fullstack
 
-# 1. Backend
-cd backend
-cp .env.example .env  # Configure as variáveis
-docker-compose up -d  # Subir PostgreSQL
-npm install
-npm run start:dev     # Backend na porta 3001
-npm run seed          # Popular com dados de teste
+# 1. Subir Docker (PostgreSQL, Redis, pgAdmin)
+docker-compose up -d
 
-# 2. Frontend (nova aba do terminal)
-cd ../frontend
+# 2. Configurar Backend
+cd backend
+cp .env.example .env  # Configure as variáveis (veja seção abaixo)
 npm install
-npm run dev          # Frontend na porta 3000
 ```
 
+### ⚠️ IMPORTANTE - Criar Tabelas no Banco de Dados
+
+Após instalar as dependências, siga estes passos:
+
+1. Abra o arquivo `src/config/database.config.ts`
+2. Temporariamente mude `synchronize: false` para `synchronize: true`
+3. Inicie o backend: `npm start`
+4. Aguarde ver a mensagem de conexão com o banco
+5. Pare o backend (Ctrl+C)
+6. Volte `synchronize: true` para `synchronize: false`
+7. Inicie novamente: `npm start`
+8. (Opcional) Popular com dados de teste: `npm run seed`
+
+```bash
+# 3. Configurar Frontend (em nova aba do terminal)
+cd ../frontend
+npm install
+npm run dev
+```
+
+**Acesse:** 
+- Frontend: http://localhost:3000
+- Backend: http://localhost:3001
+- API Docs: http://localhost:3001/api
+
 ### Variáveis de Ambiente (.env no backend/)
+
+Crie o arquivo `.env` na pasta `backend/` com:
+
 ```env
-DATABASE_HOST=postgres
+# Database
+DATABASE_HOST=localhost
 DATABASE_PORT=5432
 DATABASE_USERNAME=postgres
 DATABASE_PASSWORD=postgres123
-DATABASE_NAME=marketplace_db
+DATABASE_NAME=marketplace
 
-JWT_SECRET=seu-jwt-secret-muito-seguro
+# JWT
+JWT_SECRET=seu-jwt-secret-muito-seguro-aqui
 JWT_EXPIRATION=24h
 
+# Email (opcional para desenvolvimento)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=seu-email@gmail.com
+SMTP_PASS=sua-senha-app
+
+# App
 NODE_ENV=development
 PORT=3001
 ```
@@ -59,6 +93,8 @@ PORT=3001
 - **Admin:** CRUD de produtos com modal
 
 ## 🧪 Usuários de Teste
+
+Após executar `npm run seed` no backend:
 
 ```json
 Admin: {
@@ -132,14 +168,17 @@ Detecta automaticamente o tipo de produto:
 ## 🐳 Docker
 
 ```bash
-# Backend completo
+# Subir todos os serviços
 docker-compose up -d
 
-# Logs
-docker-compose logs -f backend
+# Ver logs
+docker-compose logs -f
 
-# Parar
+# Parar serviços
 docker-compose down
+
+# Parar e remover volumes (apaga dados)
+docker-compose down -v
 ```
 
 ## 📋 API Endpoints
@@ -149,7 +188,7 @@ docker-compose down
 ### Autenticação
 - `POST /auth/register` - Cadastro
 - `POST /auth/login` - Login  
-- `GET /auth/profile` - Perfil (auth)
+- `GET /auth/profile` - Perfil (requer autenticação)
 
 ### Produtos
 - `GET /products` - Listar (público)
@@ -158,10 +197,10 @@ docker-compose down
 - `DELETE /products/:id` - Deletar (admin)
 
 ### Carrinho
-- `GET /cart` - Ver carrinho (auth)
-- `POST /cart/add` - Adicionar (auth)
-- `POST /cart/update` - Atualizar (auth)
-- `DELETE /cart/remove/:id` - Remover (auth)
+- `GET /cart` - Ver carrinho (requer autenticação)
+- `POST /cart/add` - Adicionar item (requer autenticação)
+- `POST /cart/update` - Atualizar quantidade (requer autenticação)
+- `DELETE /cart/remove/:id` - Remover item (requer autenticação)
 
 ## ✅ Checklist PS
 
@@ -185,20 +224,37 @@ Todos os requisitos implementados:
 - ✅ Estados de loading e feedback visual
 - ✅ Proteção de rotas e roles
 
-## 🚀 Deploy
+## 🔧 Troubleshooting
 
-**URLs:**
-- Frontend: http://localhost:3000
-- Backend: http://localhost:3001
-- API Docs: http://localhost:3001/api
+### Erro de conexão com banco de dados
+1. Verifique se o Docker está rodando: `docker ps`
+2. Certifique-se que o container PostgreSQL está ativo
+3. Confirme as credenciais no arquivo `.env`
+4. Verifique se seguiu os passos de criação de tabelas
 
-## 📞 Suporte
+### Tabelas não existem
+1. Siga a seção "IMPORTANTE - Criar Tabelas no Banco de Dados"
+2. Certifique-se de voltar `synchronize` para `false` após criar as tabelas
 
-Para dúvidas técnicas, verificar:
-1. Logs do Docker: `docker-compose logs`
-2. Console do navegador (F12)
-3. Seeds executados: `npm run seed`
-4. Variáveis de ambiente configuradas
+### Logs úteis
+```bash
+# Logs do backend
+docker-compose logs backend
+
+# Logs do PostgreSQL
+docker-compose logs postgres
+
+# Console do navegador (F12)
+```
+
+### Porta já em uso
+```bash
+# Verificar processos na porta 3000 (frontend)
+lsof -ti:3000 | xargs kill -9
+
+# Verificar processos na porta 3001 (backend)
+lsof -ti:3001 | xargs kill -9
+```
 
 ---
 
